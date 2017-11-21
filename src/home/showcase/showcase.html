@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading text-center">
+    <h3 class="panel-title">{{$ctrl.title}}</h3>
+  </div>
+
+  <div class="panel-body">
+    <div>
+      <h4>{{$ctrl.list.title}}</h4>
+    </div>
+    <div class="embed-responsive embed-responsive-16by9">
+    <youtube-video video-url="$ctrl.list.rlink"></youtube-video>
+    </div>
+    <thumbs
+      numviews    = "$ctrl.list.numviews"
+      thumbsup    = "$ctrl.list.thumbsup"
+      thumbsdown  = "$ctrl.list.thumbsdown"
+      numid       = "$ctrl.list.numid"
+    ></thumbs>
+    <!-- <div>
+      {{$ctrl.list.description}}
+    </div> -->
+  </div>
+</div>

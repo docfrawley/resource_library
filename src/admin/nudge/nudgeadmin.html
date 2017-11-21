@@ -1,0 +1,370 @@
+
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">{{$ctrl.title}}</h3>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div calendar="myCalendar" class = "calendar" ui-calendar="$ctrl.uiConfig.calendar" ng-model="$ctrl.eventSources"></div>
+      </div>
+    </div>
+    <div class = "row" ng-if="!$ctrl.editing && !$ctrl.editprompts">
+      <div class = "col-md-3 text-left">
+          <br /><button class="btn btn-info btn-lg btn-sm"
+                      ng-click="$ctrl.whatDo('addP')">ADD NEW SEARCH PROMPT</button>
+        </div>
+        <div class = "col-md-3 text-left">
+          <br /><button class="btn btn-success btn-lg btn-sm"
+                      ng-click="$ctrl.whatDo('add')">ADD NEW RESOURCE</button>
+      </div>
+    </div>
+    <div class="row" ng-if="$ctrl.editing">
+      <div class="col-sm-12">
+        <h4>Title</h4>
+        <table>
+          <tr>
+            <td>
+              <strong>{{$ctrl.whichtitle}}&nbsp;</strong>
+            </td>
+            <td>
+              &nbsp;<button class='btn btn-sm btn-warning'
+                      ng-click="$ctrl.whatDo('edit')"
+                      data-toggle="modal" data-target="#exampleModal">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </button>&nbsp;</td>
+            <td>&nbsp;<button class='btn btn-sm btn-danger'
+                        ng-click="$ctrl.whatDo('delete')"
+                        data-toggle="modal" data-target="#exampleModal">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>&nbsp;</td>
+            <td>&nbsp;<button class='btn btn-sm btn-info'
+                        ng-click="$ctrl.whatDo('cancel')">
+              CANCEL
+            </button></td>
+          </tr>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" ng-if="$ctrl.editprompts">
+      <div class="col-sm-12">
+        <br /><table>
+          <tr>
+            <td>
+              <strong>PROMPTS FOR {{$ctrl.eresource.start}}&nbsp;</strong>
+            </td>
+            <td>
+              &nbsp;<button class='btn btn-sm btn-warning'
+                      ng-click="$ctrl.whatDo('editprompts')">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </button>&nbsp;</td>
+            <td>&nbsp;<button class='btn btn-sm btn-danger'
+                        ng-click="$ctrl.whatDo('deleteprompts')"
+                        data-toggle="modal" data-target="#exampleModal">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>&nbsp;</td>
+            <td>&nbsp;<button class='btn btn-sm btn-info'
+                        ng-click="$ctrl.whatDo('cancel')">
+              CANCEL
+            </button></td>
+          </tr>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <br /><div class = 'row' ng-if="($ctrl.whatDoing=='editprompts' || $ctrl.whatDoing=='addP')
+              && !$ctrl.promptsEdited && !$ctrl.promptsAdded">
+      <div class='col-sm-3 text-right' ng-if="$ctrl.whatDoing=='editprompts'">
+        <h4>EDIT PROMPTS FOR</h4>
+      </div>
+        <form>
+      <div class="col-sm-3" ng-if="$ctrl.whatDoing=='editprompts'">
+        <input class="form-control" type="date" ng-model="$ctrl.edate"
+        value="$ctrl.eresource.start" id="example-date-input">
+      </div>
+      <div class="col-sm-12" ng-if="$ctrl.whatDoing=='addP'">
+        <h4>ADD NEW PROMPTS</h4>
+      </div>
+      <div class="col-sm-12" ng-if="$ctrl.whatDoing=='addP'">
+        <div class="row">
+          <div class='col-xs-2'>
+            <h5>START DATE</h5>
+          </div>
+          <div class='col-xs-4'>
+            <input class="form-control" type="date" ng-model="$ctrl.edate">
+          </div>
+        </div>
+      </div>
+      <div class='col-sm-12'>
+          <div class='row'>
+            <div class='col-xs-1'>
+              <h5>ORDER</h5>
+            </div>
+            <div class='col-xs-11 text-left'>
+              <h5>CHANGE PROMPT WORDING</h5>
+            </div>
+          </div>
+          <div class='row' ng-repeat="prompt in $ctrl.prompts track by $index">
+            <div class="col-xs-1 text-right" >
+              <table>
+                <tr>
+                  <td>
+                    <button ng-if="$index+1 < $ctrl.promptsLength"
+                            class='btn btn-xs btn-success'
+                            ng-mouseup="$ctrl.changeOrder($index, 1)">
+                      <i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+                  </td>
+                  <td>
+                    <button ng-if="$index > 0"
+                            class='btn btn-xs btn-success'
+                            ng-click="$ctrl.changeOrder($index, -1)">
+                      <i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-xs-10 text-left" ng-model="prompt.prompt">
+              <input class="form-control" type="text" ng-model="prompt.prompt"
+              placeholder="{{prompt.prompt}}"
+              ng-blur="$ctrl.makePromptUpdate($index, prompt.prompt)">
+            </div>
+            <div class="col-xs-1 text-left">
+              <button class='btn btn-xs btn-danger'
+                          ng-click="$ctrl.removePrompt($index)">
+                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class='col-sm-12 text-right'>
+        <button class='btn btn-xs btn-info'
+                    ng-click="$ctrl.addPrompt()">
+          <i class="fa fa-plus" aria-hidden="true"></i> PROMPT</button>
+      </div>
+      <div class='col-sm-12'>
+        <button class='btn btn-md btn-primary' ng-if="$ctrl.whatDoing=='editprompts'"
+                    ng-click="$ctrl.editPrompts()">UPDATE</button>
+        <button class='btn btn-md btn-primary' ng-if="$ctrl.whatDoing=='addP'"
+                    ng-click="$ctrl.addNewPrompts()">ADD PROMPTS</button>
+        <button class='btn btn-md btn-success'
+                    ng-click="$ctrl.whatDo('cancel')">CANCEL</button>
+      </div>
+    </div>
+    <div class = 'row' ng-if="$ctrl.whatDoing=='editprompts' && $ctrl.promptsEdited">
+      <div class=" col-sm-12 alert alert-success" role="alert">
+        Prompts were successfully updated.
+      </div>
+    </div>
+    <div class = 'row' ng-if="$ctrl.whatDoing=='addP' && $ctrl.promptsAdded">
+      <div class=" col-sm-12 alert alert-success" role="alert">
+        Prompts were successfully added.
+      </div>
+    </div>
+
+
+
+
+    <div class = 'row' ng-if="$ctrl.whatDoing=='add'">
+      <div class='col-sm-12'>
+        <br /><h4>ADD RESOURCE TO HOME PAGE</h4>
+      </div>
+      <div class='col-sm-12'>
+        <div ng-if="$ctrl.madeAddition" class="alert alert-success" role="alert">
+          Resource was successfully added to frontpage on the date selected.</div>
+      </div>
+      <form ng-if="!$ctrl.madeAddition" ng-submit="$event.preventDefault()"
+            name='getForm' novalidate>
+        <div class='col-sm-12'>
+          <label>Title of Resource</label>
+          <div ng-if="$ctrl.notag" class="alert alert-danger" role="alert">
+            We don't have anything that matches that request. Please try again.</div>
+        </div>
+        <div class="col-sm-12">
+            <md-autocomplete
+                ng-disabled="$ctrl.isDisabled"
+                md-no-cache="$ctrl.noCache"
+                md-selected-item="$ctrl.selectedItem"
+                md-search-text="$ctrl.searchText"
+                md-selected-item-change="$ctrl.selectedItemChange(item)"
+                md-items="item in $ctrl.querySearch($ctrl.searchText)"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="type, type like the wind" ng-model="$ctrl.search"
+                class="input-element">
+              <md-item-template>
+                <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No matches "{{$ctrl.searchText}}" were found.
+              </md-not-found>
+            </md-autocomplete>
+            <br/>
+          </md-content>
+        </div>
+
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="form-group row">
+              <label for="example-date-input"
+              class="col-sm-3 col-form-label text-center">Start Date</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="date" ng-model="$ctrl.adate"
+                value="$ctrl.eresource.start" id="example-date-input">
+              </div>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input  class="form-check-input" type="radio"
+                        ng-model="$ctrl.wview" name="exampleRadios"
+                        id="exampleRadios1" value="inspiration">
+                      Inspiration </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input  class="form-check-input" type="radio"
+                        name="exampleRadios" ng-model="$ctrl.wview"
+                        id="exampleRadios2" value="advice">
+                      Tools & Tips  </label>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class='col-md-3'>
+          <button type="button"class="btn btn-primary"
+                  ng-click="$ctrl.addFPResource()">ADD TO HOMEPAGE</button>
+        </div>
+        <div class='col-md-3'>
+          <button type="button"class="btn btn-warning"
+                  ng-click="$ctrl.addFPResource()">CANCEL</button>
+        </div>
+      </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 ng-if="$ctrl.whatDoing=='edit'" class="modal-title"
+            id="exampleModalLabel">Edit <strong>{{$ctrl.whichtitle}}</strong> for Home Page</h5>
+        <h5 ng-if="$ctrl.whatDoing=='delete'"
+            class="modal-title" id="exampleModalLabel">Delete {{$ctrl.whichtitle}}
+                From Nudging</h5>
+        <h5 ng-if="$ctrl.whatDoing=='deleteprompts'"
+            class="modal-title" id="exampleModalLabel">
+                Delete PROMPTS FOR {{$ctrl.eresource.start}}</h5>
+        <h5 ng-if="$ctrl.whatDoing=='add'"
+            class="modal-title" id="exampleModalLabel">Add Resource to Home Page</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body" >
+        <div class="row" ng-if="$ctrl.madeAction">
+          <div  class="col-sm-12 alert alert-success" ng-if="$ctrl.whatDoing=='edit'"
+                role="alert">
+            Changes were successfully made.
+          </div>
+          <div  class="col-sm-12 alert alert-success" ng-if="$ctrl.whatDoing=='delete'"
+                role="alert">
+            Resource was successfully deleted from home page rotation.
+          </div>
+          <div  class="col-sm-12 alert alert-success" ng-if="$ctrl.whatDoing=='deleteprompts'"
+                role="alert">
+            Prompts were successfully deleted from home page rotation.
+          </div>
+        </div>
+
+        <div class=row ng-if="!$ctrl.madeAction">
+          <div class="col-sm-12" ng-if="$ctrl.whatDoing=='delete'">
+            Are you sure you want to delete <strong>{{$ctrl.whichtitle}} </strong>
+            from the homepage rotation?<br />
+          </div>
+          <div class="col-sm-12" ng-if="$ctrl.whatDoing=='deleteprompts'">
+            Are you sure you want to delete prompts for <strong>{{$ctrl.eresource.start}} </strong>
+            from the homepage rotation?<br />
+          </div>
+          <div class="col-sm-12" ng-if="$ctrl.whatDoing=='edit'">
+              <form ng-submit="$event.preventDefault()" name='getForm' novalidate>
+
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="form-group row">
+                        <label for="example-date-input"
+                        class="col-sm-3 col-form-label text-center">Start Date</label>
+                        <div class="col-sm-9">
+                          <input class="form-control" type="date" ng-model="$ctrl.edate"
+                          value="$ctrl.eresource.start" id="example-date-input">
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input  class="form-check-input" type="radio"
+                                  ng-model="$ctrl.wview" name="exampleRadios"
+                                  id="exampleRadios1" value="inspiration">
+                                Inspiration </label>
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input  class="form-check-input" type="radio"
+                                  name="exampleRadios" ng-model="$ctrl.wview"
+                                  id="exampleRadios2" value="advice">
+                                Advice  </label>
+                      </div>
+                      <div class="form-check" ng-model="$ctrl.wview3">
+                        <label class="form-check-label">
+                          <input  class="form-check-input" type="radio"
+                                  name="exampleRadios"   ng-model="$ctrl.wview"
+                                  id="exampleRadios3" value="opportunities">
+                                Opportunities  </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </form>
+          </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+            ng-if="!$ctrl.madeAction" data-dismiss="modal" >CANCEL</button>
+          <button ng-if="$ctrl.whatDoing == 'delete' && !$ctrl.madeAction" type="button"
+                  class="btn btn-primary" ng-click="$ctrl.deleteFPResource()"
+                  >DELETE FROM CALENDAR</button>
+          <button ng-if="$ctrl.whatDoing == 'deleteprompts' && !$ctrl.madeAction" type="button"
+                  class="btn btn-primary" ng-click="$ctrl.deleteFPPrompts()"
+                  >DELETE</button>
+          <button ng-if="$ctrl.whatDoing == 'edit' && !$ctrl.madeAction" type="button"
+                  class="btn btn-primary" ng-click="$ctrl.editFPResource()"
+                  >UPDATE</button>
+
+        <div ng-if="$ctrl.madeAction">
+          <button type="button" class="btn btn-secondary"
+                data-dismiss="modal">CLOSE</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

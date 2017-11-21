@@ -1,0 +1,117 @@
+<div class="col-md-12">
+        <h1 class="panel-title" ng-if="$ctrl.what=='edit'">EDITING {{$ctrl.resource.title}}...if you dare</h1>
+        <div ng-if="$ctrl.added" class="alert alert-success" role="alert">
+          Resource was added successfully and is currently listed as pending. One of the super admins
+        will need to approve it so go bug them to do so.</div>
+        
+      <br /><div ng-if="$ctrl.partOne">
+        <form>
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Title</label>
+                <input  type="text" class="form-control"
+                        placeholder="{{$ctrl.title}}"
+                        ng-model = "$ctrl.title"
+                        ng-click = "$ctrl.clearSignage()">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label >Type</label>
+                <select class="form-control"
+                        ng-model = "$ctrl.type_resource"
+                        ng-change = "$ctrl.changeUpload()"
+                         ng-click = "$ctrl.clearSignage()">
+                  <option value="youtube">Video ~ YouTube</option>
+                  <option value="Link">Link</option>
+                  <option value="PDF Upload">PDF Upload</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="exampleTextarea">Description</label>
+                <textarea class="form-control" rows="3"
+                          ng-model="$ctrl.description"
+                           ng-click = "$ctrl.clearSignage()">{{$ctrl.description}}</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="form-group" ng-if="$ctrl.howUpload">
+                <label for="exampleInputFile">File Input</label>
+                <input type="file" class="form-control-file" ng-model = "$ctrl.pdfFile"
+                      name="file" aria-describedby="fileHelp"
+                      ngf-select
+                      accept="pdf/*" ngf-max-size="4MB"
+                       ng-click = "$ctrl.clearSignage()">
+              </div>
+              <div class="form-group" ng-if="!$ctrl.howUpload">
+                <label for="exampleInputEmail1">Link</label>
+                <input type="text" ng-model="$ctrl.rlink" class="form-control"
+                        placeholder="{{$ctrl.rlink}}">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div ng-if="$ctrl.what=='add'">
+                <button type="submit" class="btn btn-primary" ng-if="$ctrl.howUpload" ng-click="$ctrl.partTwopdf()">UPLOAD</button>
+                <button type="submit" class="btn btn-success" ng-if="!$ctrl.howUpload" ng-click="$ctrl.partTwo()">UPLOAD</button>
+              </div>
+              <div ng-if="$ctrl.what=='edit'">
+                <button type="submit" class="btn btn-primary" ng-if="$ctrl.howUpload" ng-click="$ctrl.partTwopdf()">MOVE ON TO TAGS</button>
+                <button type="submit" class="btn btn-success" ng-if="!$ctrl.howUpload" ng-click="$ctrl.partTwo()">MOVE ON TO TAGS</button>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-info" ng-click="$ctrl.cancelThat()">CANCEL</button>
+            </div>
+          </div>
+          
+          
+        </form>
+      </div>
+
+      <div class="panel-body text-center" ng-if="!$ctrl.partOne">
+        <h3>GOT TO ADD THOSE TAGS</h3>
+        <div class="row">
+          <div class="col-sm-6 text-center">
+            <h4>Possible Tags</h4>
+            <div ng-repeat="tag in $ctrl.tags">
+              <button type="button" class="btn btn-primary btn-sm button_tag"
+                      ng-if="tag.show"
+                      ng-click="$ctrl.changeShow($index)">{{tag.display}}</button>
+            </div>
+          </div>
+          <div class="col-sm-6 text-center">
+            <h4>Tags For this Resource</h4>
+            <div ng-repeat="tag in $ctrl.tagsin">
+              <button type="button" class="btn btn-primary btn-sm button_tag"
+                      ng-if="tag.show"
+                      ng-click="$ctrl.changeShow($index)">{{tag.display}}</button>
+            </div>
+          </div>
+        </div><br />
+
+        <div class="row">
+          <div class="col-sm-6">
+            <button type="submit" class="btn btn-success btn-lg btn-block"
+                    ng-click="$ctrl.nowUpload()"
+                    ng-if="$ctrl.what=='add'"
+                    >NOW UPLOAD</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block" 
+                    ng-click="$ctrl.nowUpload()"
+                    ng-if="$ctrl.what!='add'"
+                    >NOW UPDATE</button>
+          </div>
+          <div class="col-sm-6">
+            <button type="submit" class="btn btn-info btn-lg btn-block"
+                ng-click="$ctrl.partTwo()">GO BACK TO PART ONE</button>
+          </div>
+        </div>
+  </div>

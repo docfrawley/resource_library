@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 feedback_state" ng-if="fctrl.nofeedback">
+        We appreciate, nay, crave your feedback. Perhaps you have a question that remains unanswered or have a suggestion about how
+        to improve this already incredibly awesome site. Please complete the form below and if 
+        you want us to get back to you, please do provide your name and email address. Thanks!<br/><br/>
+    </div>
+    <div ng-if="!fctrl.nofeedback" class="alert alert-success col-md-6 col-md-offset-3" role="alert">
+        Your entry was successfully delivered. Thank you for taking the time to reach out.</div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <form name='feedbackForm' novalidate>
+            <div class="row justify-content-md-center buttons">
+                <label class="col-sm-3 control-label text-left" for="inputUsername">Name (optional)</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="name" 
+                            placeholder="Name...did I mention this was optional" 
+                            ng-model="fctrl.name" ng-click="fctrl.resetPage()">
+                    <br>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <label class="col-sm-3 control-label text-left" for="inputPassword">Email (optional) </label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="email" 
+                            placeholder="Email...optional as well" 
+                             ng-click="fctrl.resetPage()" ng-model="fctrl.email">
+                    <br>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <label class="col-sm-3 control-label text-left" for="inputPassword">Question/Feedback</label>
+                <div class="col-sm-8">
+                    <textarea class="form-control" rows="5"
+                    name="actual" ng-model="fctrl.actual" 
+                     ng-click="fctrl.resetPage()" required autofocus></textarea>
+               
+                    <span class="input_warning"  ng-if="feedbackForm.actual.$error.required && feedbackForm.actual.$touched">
+                        You need to enter something, a compliment perhaps, before you can send feedback. 
+                    </span>
+                    <br/><br/>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-sm-6">
+                    <button class='btn btn-primary btn-lg feedback_button' ng-click="fctrl.sendFeedback(feedbackForm)" ng-disabled="feedbackForm.$invalid">SEND FEEDBACK</button><br/><br/>
+                </div>
+        
+                
+            </div>
+        </form>
+    </div>
+</div>

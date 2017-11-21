@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-sm-12 text-right">
+    {{$ctrl.numviews}} views
+  </div>
+  <div class="col-sm-12 text-right">
+    <span ng-if="$ctrl.pressed!='thumbsup'" class="toff"><i class="fa fa-thumbs-up"
+        ng-click="$ctrl.thumbing('thumbsup')"></i>&nbsp;{{$ctrl.thumbsup}}</span>
+    <span ng-if="$ctrl.pressed=='thumbsup'" class="tpress"><i class="fa fa-thumbs-up"
+        ng-click="$ctrl.thumbing('thumbsup')"></i>&nbsp;{{$ctrl.thumbsup}}</span>&nbsp;
+
+    <span ng-if="$ctrl.pressed!='thumbsdown'" class="toff"><i class="fa fa-thumbs-down toff"
+        ng-click="$ctrl.thumbing('thumbsdown')"></i>&nbsp;{{$ctrl.thumbsdown}}</span>
+    <span ng-if="$ctrl.pressed=='thumbsdown'" class="tpress"><i class="fa fa-thumbs-down"
+        ng-click="$ctrl.thumbing('thumbsdown')"></i>&nbsp;{{$ctrl.thumbsdown}}</span>
+  </div>
+</div>

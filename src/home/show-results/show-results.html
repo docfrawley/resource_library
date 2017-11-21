@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="embed-responsive embed-responsive-16by9" ng-if="$ctrl.list.type_resource=='youtube'">
+        <youtube-video video-url="$ctrl.list.rlink"></youtube-video>
+        </div>
+        <div class="embed-responsive embed-responsive-16by9"
+              ng-if="$ctrl.list.type_resource!='youtube'">
+          <span ng-if="$ctrl.list.type_resource=='PDF Upload'" >
+              <a href="{{$ctrl.list.rlink}}" ng-click="$ctrl.didClick()" target="_blank">
+                <img src="img/pdf.jpg" class="img-fluid"/></a></span>
+
+          <span ng-if="$ctrl.list.type_resource=='Link'">
+              <a href="{{$ctrl.list.rlink}}" target="_blank">
+                <img src="img/link.jpg" class="img-fluid"/></a></span>
+
+          <span ng-if="$ctrl.list.type_resource=='lynda'">
+            <a href="{{$ctrl.list.rlink}}" target="_blank">
+              <img src="img/lynda.jpg" class="img-fluid" /></a></span>
+        </div>
+        <thumbs
+          numviews    = "$ctrl.list.numviews"
+          thumbsup    = "$ctrl.list.thumbsup"
+          thumbsdown  = "$ctrl.list.thumbsdown"
+          numid       = "$ctrl.list.numid"
+        ></thumbs>
+      </div>
+    <div class="col-md-8">
+      <h3><a href="{{$ctrl.list.rlink}}" ng-click="$ctrl.didClick()" 
+            target="_blank">{{$ctrl.list.title}}</a></h3>
+      <div>
+        {{$ctrl.list.description}}
+      </div>
+      <div><i>uploaded: {{$ctrl.list.wupload}}</i></div>
+    </div>
+  <div>
+
+  </div>
+</div>

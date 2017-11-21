@@ -1,0 +1,120 @@
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">{{$ctrl.title}}</h3>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <show-list
+          whatdoing = 'pending'
+          level="$ctrl.who.level"
+          title="CURRENT LIST OF PENDING RESOURCES"
+          list="$ctrl.list"
+          edit-action="$ctrl.approveUpdate(index)"
+          delete-action="$ctrl.deleteUpdate(index)"></show-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 ng-if="$ctrl.whatDo=='delete'"
+            class="modal-title" id="exampleModalLabel">Delete "{{$ctrl.resource.title}}"</h5>
+            <h5 ng-if="$ctrl.whatDo=='approve'"
+                class="modal-title" id="exampleModalLabel">Approve "{{$ctrl.resource.title}}"</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body" >
+        <div class="row" ng-if="$ctrl.madeAction">
+          <div class="col-sm-12" ng-if="$ctrl.whatDo=='approve'" class="alert alert-success" role="alert">
+            Resource was successfully approved and is now visible on the resource portal.
+            Any changes you have made to the title, tags, and description were added as well.
+            Feel free to thank me...your humble website is here to serve.
+          </div>
+          <div class="col-sm-12" ng-if="$ctrl.whatDo=='delete'" class="alert alert-success" role="alert">
+            Resource was successfully deleted.
+            A moment of silence for our dearly departed resource....ok back to work.
+          </div>
+        </div>
+        <div class=row ng-if="!$ctrl.madeAction">
+          <div class="col-sm-12">
+            <a href="{{$ctrl.resource.rlink}}" target="_blank"
+                type="button" class="btn btn-primary" >GO LOOK AT RESOURCE</a><br />
+          </div>
+          <div class="col-sm-12" ng-if="$ctrl.whatDo=='delete'">
+          <br />  Are you sure you want to delete this entry? Whatever you've entered will be
+            gone, lost, forgotten, goodbye. Well, not really. You can 'resurrect' this resource.
+          </div>
+          <div class="col-sm-12" ng-if="$ctrl.whatDo=='approve'">
+            <br /><form>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label>Title (Type: {{$ctrl.resource.type_resource}})</label>
+                    <input  type="text" class="form-control" ng-model="ctrl.resource.title"
+                            placeholder="{{$ctrl.resource.title}}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label for="exampleTextarea">Description</label>
+                    <textarea class="form-control" rows="3"
+                    ng-model="$ctrl.resource.description">{{$ctrl.description}}</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6 text-center">
+                  <h4>Possible Tags</h4>
+                  <div ng-repeat="tag in $ctrl.tags">
+                    <button type="button" class="btn btn-primary btn-sm button_tag"
+                            ng-if="tag.show"
+                            ng-click="$ctrl.changeShow($index)">{{tag.display}}</button>
+                  </div>
+                </div>
+                <div class="col-sm-6 text-center">
+                  <h4>Tags For this Resource</h4>
+                  <div ng-repeat="tag in $ctrl.tagsin">
+                    <button type="button" class="btn btn-primary btn-sm button_tag"
+                            ng-if="tag.show"
+                            ng-click="$ctrl.changeShow($index)">{{tag.display}}</button>
+                  </div>
+                </div>
+              </div><br />
+          </form>
+       </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+            ng-if="!$ctrl.madeAction" data-dismiss="modal" >CANCEL</button>
+          <button ng-if="$ctrl.whatDo == 'delete' && !$ctrl.madeAction" type="button"
+                  class="btn btn-primary" ng-click="$ctrl.deleteResource()"
+                  >DELETE</button>
+          <button ng-if="$ctrl.whatDo == 'approve' && !$ctrl.madeAction" type="button"
+                  class="btn btn-primary" ng-click="$ctrl.approveResource()"
+                  >APPROVE</button>
+        <div ng-if="$ctrl.madeAction">
+          <button type="button" class="btn btn-secondary"
+                data-dismiss="modal"
+                ng-click="$ctrl.resetM()">CLOSE</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
